@@ -2,6 +2,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import connectDB from './config/db.mjs';
+import loginRoutes from './routes/login.mjs'
+import signupRoutes from './routes/signup.mjs'
+
 
 dotenv.config();
 
@@ -9,7 +13,7 @@ dotenv.config();
 const app = express();
 
 //Connect DB
-
+connectDB();
 
 //Initialize middleware
 app.use(express.json({extended: false}));
@@ -21,8 +25,12 @@ app.get('/', (req, res)=>{
 })
 
 //Define routes
-const PORT=process.env.PORT||3000;
+app.use('/login', loginRoutes);
+app.use('/signup', signupRoutes);
 
+
+//Environmetal variables
+const PORT=process.env.PORT||3000;
 app.listen(PORT,()=>console.log(`Server running on port ${PORT}`));
 
 
