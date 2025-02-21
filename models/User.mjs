@@ -15,17 +15,16 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  drafts:[{ 
-      id:Number,
-      title:{
-          type:String,
-          required:true,
-      },
-      body:{
-          type:String,
-      },
+  drafts:[
+    { 
+      title:{type:String, required:true},
+      body:{type:String }
     }
   ]
+},
+{
+  timestamps:true,
+  versionKey:false
 });
 
 const User = mongoose.model('User', UserSchema);

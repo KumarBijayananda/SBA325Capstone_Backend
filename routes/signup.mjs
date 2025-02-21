@@ -1,8 +1,8 @@
 //Dependencies
 import express from "express";
-// import jwt from 'jsonwebtoken';
-// import bcrypt from 'bcryptjs';
-// import { check, validationResult } from 'express-validator';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { check, validationResult } from 'express-validator';
 import User from "../models/User.mjs";
 
 const router = express.Router();
@@ -16,24 +16,24 @@ router.get("/", (req, res) => {
 // @access:  Public
 router.post(
   "/",
-  //   [
-  //     check('name', 'Name is required').not().isEmpty(),
-  //     check('email', 'Please include a valid email').isEmail(),
-  //     check(
-  //       'password',
-  //       'Please enter a password with 6 or more characters'
-  //     ).isLength({ min: 6 }),
-  //   ],
+    [
+      check('name', 'Name is required').not().isEmpty(),
+      check('email', 'Please include a valid email').isEmail(),
+      check(
+        'password',
+        'Please enter a password with 6 or more characters'
+      ).isLength({ min: 4 }),
+    ],
   async (req, res) => {
     // Check if any validation errors in the req obj
-    // let errors = validationResult(req);
+    let errors = validationResult(req);
 
-    // If the errors variable is NOT empty, response with errors
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ errors: errors.array() });
-    // }
+    //If the errors variable is NOT empty, response with errors
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     // Destructure my req.body
-    // const { name, email, password } = req.body;
+    const { name, email, password} = req.body;
 
     try {
       // Check if user already exists
@@ -52,35 +52,36 @@ router.post(
           email,
           password,
         });
-      await User.create(req.body);
+        
+      // await User.create(user);
 
       // Encrypt password
       // Create a salt - number of encryption rounds it goes through
-      //   const salt = await bcrypt.genSalt(10);
+        const salt = await bcrypt.genSalt(10);
       // Hash password using salt
-      //   user.password = await bcrypt.hash(password, salt);
+        user.password = await bcrypt.hash(password, salt);
       //   Save user to DB
-      //   await user.save();
+        await user.save();
 
-      res.send(req.body);
-      //   const payload = {
-      //     user: {
-      //       id: user.id,
-      //     },
-      //   };
+      // res.send(req.body);
+        const payload = {
+          user: {
+            id: user.id,
+          },
+        };
       //   Create a jwt, sign it, if there are no errors, send token to the FE
-      //   jwt.sign(
-      //     payload,
-      //     process.env.jwtSecret,
-      //     { expiresIn: 3600000 }, //Expiration date/time/options obj
-      //     (err, token) => {
-      //       // If error, throw error
-      //       if (err) throw err;
-      //       res.status(201).json({ token });
-      //     }
-      //   );
-    } catch (err) {
-      console.error(err);
+        jwt.sign(
+          payload,
+          process.env.jwtSecret,
+          { expiresIn: 3600000 }, //Expiration date/time/options obj
+          (err, token) => {
+            // If error, throw error
+            if (err) throw err;
+            res.status(201).json({ token });
+          }
+        );
+    } catch (error) {
+      console.error(error);
       res.status(500).json({ errors: [{ msg: "Server Error for create user" }] });
     }
   }
