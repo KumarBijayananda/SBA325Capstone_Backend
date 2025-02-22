@@ -10,11 +10,8 @@ const db= process.env.mongoURI
 //connect to DB using mongoose
 const connectDB = async () => {
     try {
-      await mongoose.connect(db, {
-        useNewUrlParser: true,
-      });
+      await mongoose.connect(db);
   
-      
     } catch (err) {
       console.error(err.message);
   

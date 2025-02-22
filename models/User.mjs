@@ -18,7 +18,8 @@ const UserSchema = new mongoose.Schema({
   drafts:[
     { 
       title:{type:String, required:true},
-      body:{type:String }
+      body:{type:String },
+      updatedAt:{type:Date, default: Date.now}
     }
   ]
 },
