@@ -5,10 +5,11 @@ import auth from "../middleware/auth.mjs";
 
 const router = express.Router();
 
-router.get("/", auth, async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
-    res.json(user.drafts);
+    const user = await User.findById(req.user.id);
+    const draft=user.drafts.filter((draft)=>(draft.id===req.params.id))
+    res.json(draft);
   } catch (error) {
     console.error(error);
     res.status(500).json({ errors: [{ msg: "Server Error for draft GET" }] });
