@@ -7,6 +7,7 @@ import loginRoutes from './routes/login.mjs'
 import signupRoutes from './routes/signup.mjs'
 import dashboardRoutes from './routes/dashboard.mjs'
 import draftRoutes from './routes/draft.mjs'
+import archiveRoutes from './routes/archive.mjs'
 
 
 dotenv.config();
@@ -32,7 +33,7 @@ app.use('/login', loginRoutes);
 app.use('/signup', signupRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/draft', draftRoutes);
-
+app.use('/archive', archiveRoutes)
 
 //Error handling middleware---------------
 app.use((err, req, res, next) => {
