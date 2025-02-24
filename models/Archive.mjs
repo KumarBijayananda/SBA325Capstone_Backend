@@ -3,14 +3,9 @@ import mongoose from 'mongoose';
 
 //Define archive schema
 const ArchiveSchema = new mongoose.Schema({
-    draft_id:Number,
-  archived_draft:[{ 
-    id:Number,
-    body:{
-        type:String,
-    },
-    }
-  ]
+      draft_id:String,
+      body:{type:String },
+      updatedAt:{type:Date, default: Date.now}
 });
 
 const Archive = mongoose.model('Archive', ArchiveSchema);
