@@ -8,13 +8,13 @@ const router = express.Router();
 router.get("/:id", auth, async (req, res) => {
 
   try {
-    const versions = await Archive.findById(req.params.id);
+    const versions = await Archive.find({draft_id:req.params.id});
     res.json(versions);
   } catch (error) {
     console.error(error);
     res
       .status(500)
-      .json({ errors: [{ msg: "Server Error for Archive GET" }] });
+      .json({ errors: [{ msg: "Server Error for Archive GET", error: error }] });
   }
 }).post("/:id", auth, async (req, res) => {
 
@@ -23,7 +23,6 @@ router.get("/:id", auth, async (req, res) => {
         draft_id: req.params.id,
         body: req.body.body,
       })
-      console.log("document_archived", archive)
       res.json(archive);
     } catch (error) {
       console.error(error);

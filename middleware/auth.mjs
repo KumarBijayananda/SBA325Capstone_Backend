@@ -8,11 +8,9 @@ export default (req, res, next)=>{
     if(!token){
         return res.status(401).json({errors: [{msg: 'No Token, denied'}]})
     }
-
     try {
         const decoded = jwt.verify(token, process.env.jwtSecret);
         req.user = decoded.user
-        console.log("user authenticated", req.user.id)
         next();
     } catch (error) {
         console.error(err)
