@@ -6,9 +6,11 @@ import { check, validationResult } from "express-validator";
 import User from "../models/User.mjs";
 import auth from "../middleware/auth.mjs";
 
+//Instantialize express router
 const router = express.Router();
 
-// @route:   GET api/auth
+//function to handle GET request for endpoint /login
+// @route:   GET /login
 // @desc:    Authenticate user
 // @access:  Private
 router.get("/", auth, async (req, res) => {
@@ -22,7 +24,8 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// @route:   POST /api/auth
+//function to handle POST request for endpoint /login
+// @route:   POST /login
 // @desc:    Login User Route
 // @access:  Public
 router.post(

@@ -5,12 +5,15 @@ import bcrypt from 'bcryptjs';
 import { check, validationResult } from 'express-validator';
 import User from "../models/User.mjs";
 
+//Instantialize express router
 const router = express.Router();
 
+//function to handle GET request for endpoint /signup
 router.get("/", (req, res) => {
   res.send("Testing Get SignUp Page");
 });
 
+//function to handle POST request for endpoint /signup
 // @route:   POST /signup
 // @desc:    SignUp User Route
 // @access:  Public
@@ -53,8 +56,6 @@ router.post(
           password,
         });
         
-      // await User.create(user);
-
       // Encrypt password
       // Create a salt - number of encryption rounds it goes through
         const salt = await bcrypt.genSalt(10);
@@ -63,7 +64,6 @@ router.post(
       //   Save user to DB
         await user.save();
 
-      // res.send(req.body);
         const payload = {
           user: {
             id: user.id,

@@ -3,13 +3,18 @@ import express from "express";
 import User from "../models/User.mjs";
 import auth from "../middleware/auth.mjs";
 
+//Instantialize express router
 const router = express.Router();
+
+//function to handle POST request for endpoint /draft
+// @route:   POST /draft
+// @desc:    
+// @access:  Private
 router.post("/", auth, async (req, res) => {
   try {
     let user = await User.findById(req.user.id).select("-password");
     user.drafts.push(req.body);
     await user.save();
-    console.log("user.drafts: ",user.drafts);
     if (!user) {
       console.log("User or Draft not found");
       return null;
@@ -24,8 +29,11 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-router
-  .get("/:id", auth, async (req, res) => {
+//function to handle GET request for endpoint /draft/:id
+// @route:   GET /draft
+// @desc:    Return draft for the specific ID
+// @access:  Private
+router.get("/:id", auth, async (req, res) => {
     try {
       const user = await User.findById(req.user.id);
       const draft = user.drafts.filter((draft) => draft.id === req.params.id);
@@ -37,19 +45,10 @@ router
   })
   .post("/:id", auth, async (req, res) => {
     try {
-      // await User.updateOne({ _id: req.user.id }, { $push: { drafts: req.body } });
-      // console.log(User);
-      // //   user.drafts.push(req.body)
-      // //   await user.save();
-
-      // //   user = await User.findById(req.user.id).select("-password");
-      // const user = await User.findById(req.user.id).select("-password");
-
       const user = await User.findOneAndUpdate(
         { _id: req.user.id, "drafts._id": req.params.id }, // find user and the draft to update
         {
           $set: {
-            // "drafts.$.title": req.body.title,
             "drafts.$.body": req.body.body,
             "drafts.$.updatedAt": new Date(), // Add timestamp
           },
