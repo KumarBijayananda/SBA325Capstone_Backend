@@ -12,7 +12,7 @@ const router = express.Router();
 // @access:  Private
 router.post("/", auth, async (req, res) => {
   try {
-    let user = await User.findById(req.user.id).select("-password");
+    let user = await User.findById(req.user.id);
     user.drafts.push(req.body);
     await user.save();
     if (!user) {
@@ -30,7 +30,7 @@ router.post("/", auth, async (req, res) => {
 });
 
 //function to handle GET request for endpoint /draft/:id
-// @route:   GET /draft
+// @route:   GET /draft/:id
 // @desc:    Return draft for the specific ID
 // @access:  Private
 router.get("/:id", auth, async (req, res) => {
@@ -43,6 +43,10 @@ router.get("/:id", auth, async (req, res) => {
       res.status(500).json({ errors: [{ msg: "Server Error for draft GET" }] });
     }
   })
+  //function to handle POST request for endpoint /draft/:id
+// @route:   POST /draft/:id
+// @desc:    Find the old draft specified by the id and update it with new draft
+// @access:  Private
   .post("/:id", auth, async (req, res) => {
     try {
       const user = await User.findOneAndUpdate(
@@ -60,7 +64,6 @@ router.get("/:id", auth, async (req, res) => {
         console.log("User or Draft not found");
         return null;
       }
-
       res.json(user);
     } catch (error) {
       console.error(error);
