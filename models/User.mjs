@@ -27,6 +27,8 @@ const UserSchema = new mongoose.Schema({
   versionKey:false
 });
 
+UserSchema.index({_id:1, unique: true});
+
 const User = mongoose.model('User', UserSchema);
 
 export default User;
