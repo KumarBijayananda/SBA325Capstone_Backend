@@ -7,6 +7,10 @@ import auth from "../middleware/auth.mjs";
 //Instantialize express router
 const router = express.Router();
 
+//function to handle GET request for endpoint /dashboard
+// @route:   GET /draft
+// @desc:    Return all the drafts for the logged in user
+// @access:  Private
 router.get("/", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -19,6 +23,10 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+//function to handle DELETE request for endpoint /dashboard/:id
+// @route:   DELETE /dashboard/:id
+// @desc:    Delete specified draft in the params and also all the archives for it
+// @access:  Private
 router.delete("/:id", auth, async (req, res) => {
   try {
     
