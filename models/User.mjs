@@ -27,8 +27,10 @@ const UserSchema = new mongoose.Schema({
   versionKey:false
 });
 
-UserSchema.index({_id:1, unique: true});
+//Indexing for quicker access by updatedAt field
+UserSchema.index({ 'drafts.updatedAt': 1 });
 
+//Instantializing User model for export
 const User = mongoose.model('User', UserSchema);
 
 export default User;

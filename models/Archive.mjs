@@ -8,6 +8,10 @@ const ArchiveSchema = new mongoose.Schema({
       updatedAt:{type:Date, default: Date.now}
 });
 
+//Indexing for quicker access by updatedAt field
+ArchiveSchema.index({updatedAt:1});
+
+//Instantializing Archive model for export
 const Archive = mongoose.model('Archive', ArchiveSchema);
 
 export default Archive;
