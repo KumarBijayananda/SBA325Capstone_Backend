@@ -8,7 +8,7 @@ const router = express.Router();
 
 //function to handle POST request for endpoint /draft
 // @route:   POST /draft
-// @desc:    
+// @desc:    Create a draft when no params 
 // @access:  Private
 router.post("/", auth, async (req, res) => {
   try {
@@ -43,11 +43,12 @@ router.get("/:id", auth, async (req, res) => {
       res.status(500).json({ errors: [{ msg: "Server Error for draft GET" }] });
     }
   })
-  //function to handle POST request for endpoint /draft/:id
-// @route:   POST /draft/:id
+
+//function to handle PATCH request for endpoint /draft/:id
+// @route:   PATCH /draft/:id
 // @desc:    Find the old draft specified by the id and update it with new draft
 // @access:  Private
-  .post("/:id", auth, async (req, res) => {
+  .patch("/:id", auth, async (req, res) => {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.user.id, "drafts._id": req.params.id }, // find user and the draft to update
