@@ -12,6 +12,7 @@ const router = express.Router();
 // @access:  Private
 router.post("/", auth, async (req, res) => {
   try {
+    //find the user and push the new draft to the drafts array
     let user = await User.findById(req.user.id);
     user.drafts.push(req.body);
     await user.save();
@@ -35,6 +36,7 @@ router.post("/", auth, async (req, res) => {
 // @access:  Private
 router.get("/:id", auth, async (req, res) => {
     try {
+      //find the user and find the specified draft by the id 
       const user = await User.findById(req.user.id);
       const draft = user.drafts.filter((draft) => draft.id === req.params.id);
       res.json(...draft);
@@ -50,6 +52,7 @@ router.get("/:id", auth, async (req, res) => {
 // @access:  Private
   .patch("/:id", auth, async (req, res) => {
     try {
+      //find the user and the specified draft and update it with new body from req
       const user = await User.findOneAndUpdate(
         { _id: req.user.id, "drafts._id": req.params.id }, // find user and the draft to update
         {

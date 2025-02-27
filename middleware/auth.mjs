@@ -9,6 +9,7 @@ export default (req, res, next)=>{
         return res.status(401).json({errors: [{msg: 'No Token, denied'}]})
     }
     try {
+        //decode the token using the secret key vaiable from .env file
         const decoded = jwt.verify(token, process.env.jwtSecret);
         req.user = decoded.user
         next();

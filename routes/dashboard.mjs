@@ -13,6 +13,7 @@ const router = express.Router();
 // @access:  Private
 router.get("/", auth, async (req, res) => {
   try {
+    //find the document for the user using id and return it
     const user = await User.findById(req.user.id).select("-password");
     res.json(user);
   } catch (error) {
@@ -29,7 +30,7 @@ router.get("/", auth, async (req, res) => {
 // @access:  Private
 router.delete("/:id", auth, async (req, res) => {
   try {
-    
+    //find the user and the specified document in the params and remove it
     const user = await User.findOneAndUpdate(
       { _id: req.user.id, "drafts._id": req.params.id }, // find user and the draft to update
       {
@@ -38,6 +39,7 @@ router.delete("/:id", auth, async (req, res) => {
         },
       });
 
+      //also delete all verions of the draft from archive
       await Archive.deleteMany({draft_id:req.params.id})
 
       res.json(user);

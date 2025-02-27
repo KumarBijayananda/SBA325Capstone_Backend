@@ -13,6 +13,7 @@ const router = express.Router();
 router.get("/:id", auth, async (req, res) => {
 
   try {
+    //find the archived draft using the draft key from params and return it
     const versions = await Archive.find({draft_id:req.params.id});
     res.json(versions);
   } catch (error) {
@@ -26,8 +27,8 @@ router.get("/:id", auth, async (req, res) => {
 // @desc:    Save draft from the body with the speicified draft ID.
 // @access:  Private
   .post("/:id", auth, async (req, res) => {
-
     try {
+      //create a new object using the data from req and save it to the database
       const archive = await Archive.create({
         draft_id: req.params.id,
         body: req.body.body,
